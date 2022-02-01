@@ -1,8 +1,21 @@
 import { TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 
 export default function Login() {
+    let navigate = useNavigate();
+
+    React.useEffect(() => {
+        let userName = localStorage.getItem('user-data-collector-user');
+
+        if (userName !== '') {
+            navigate('/home')
+
+        }
+
+
+    }, [])
 
     const [loginInfo, setLoginInfo] = React.useState({})
     const form = React.useRef(null)
@@ -19,23 +32,14 @@ export default function Login() {
     const handleLogin = (e) => {
         // console.log(product)
         // send data to the server
-        if (loginInfo.userName === 'test-admin' && loginInfo.password === 'test-admin') {
-            // setAdmin(true)
-            // setUser(true)
-            // setUserName('test-admin')
-            // history.push('/dashboard')
-        } else if (loginInfo.userName === 'test-sales' && loginInfo.password === 'test-sales') {
-            // setAdmin(false)
-            // setUser(true)
-            // setUserName('test-sales')
-            // history.push('/dashboard')
+        if (loginInfo.userName === 'admin@namasys.co' && loginInfo.password === 'admin123') {
+            localStorage.setItem('user-data-collector-user', 'admin@namasys.co')
+            navigate('/home')
 
         } else {
             alert('incorrect user or password')
-            // setAdmin(false)
-            // setUser(false)
-            // setUserName('')
 
+            form.current.reset();
         }
 
 
@@ -44,7 +48,7 @@ export default function Login() {
 
 
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div style={{ background: '#fff8f8', width: '600px', marginTop: '200px', padding: '30px', borderRadius: '40px' }}>
+        <div style={{ background: '#fff8f8', width: '600px', marginTop: '100px', padding: '30px', borderRadius: '40px' }}>
             <h1 style={{ color: 'red' }}>Login</h1>
 
 

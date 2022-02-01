@@ -14,11 +14,52 @@ export default function Home() {
         setUserData(newUserData)
     }
     const handleLogin = (e) => {
+        // console.log(product)
+        // send data to the server
+        fetch('https://user-data-collector.herokuapp.com/user', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(userData)
 
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.insertedId) {
+                    alert('User Added')
+                    // setIsChanged(!isChanged)
+                    form.current.reset();
+
+                }
+            })
         e.preventDefault()
     }
-return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',marginTop:'100px' }}>
-        <div style={{width:'500px'}}>
+
+    const handleAlphabetsFilter = (e) => {
+        let regex = /^[a-zA-Z]*$/;
+        if (regex.test(e.target.value)) {
+
+        }
+        else {
+            e.target.value = ""
+            // e.target.value = s.slice(0, -1)
+            alert('Alphabets Only')
+
+        }
+    }
+    const handleNumberFilter = (e) => {
+        let s = e.target.value
+        let len = s.length
+        if (len > 10) {
+            alert('10 Number Allowed');
+            e.target.value = ''
+
+        }
+    }
+
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' }}>
+        <div style={{ width: '500px' }}>
             <h1 style={{ color: 'red' }}>Add New User</h1>
 
 
@@ -33,7 +74,11 @@ return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'cen
                     label="User Name"
                     variant="standard"
                     name='userName'
-                    onBlur={handleOnBlur} />
+                    // helperText={error ? "Alphabets Only" : ""}
+                    onBlur={handleOnBlur}
+                    onKeyUp={handleAlphabetsFilter}
+                    pattern='[A-Za-z\\s]*'
+                />
 
                 <TextField
                     required
@@ -42,6 +87,7 @@ return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'cen
                     variant="standard"
                     name='number'
                     type='number'
+                    onKeyUp={handleNumberFilter}
                     onBlur={handleOnBlur} />
                 <TextField
                     required
