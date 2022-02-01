@@ -8,8 +8,8 @@ export default function Login() {
 
     React.useEffect(() => {
         let userName = localStorage.getItem('user-data-collector-user');
-
-        if (userName !== '') {
+        console.log(userName)
+        if (userName !== null || "") {
             navigate('/home')
 
         }
