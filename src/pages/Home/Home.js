@@ -1,10 +1,19 @@
-import { TextField } from '@mui/material';
+import { Alert, Snackbar, TextField } from '@mui/material';
 import React, { useState } from 'react';
 
 export default function Home() {
     const [userData, setUserData] = useState({})
     const form = React.useRef(null)
-    // const history = useHistory();
+    //   snake bar
+    const [open, setOpen] = React.useState(false);
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+    // end
 
     const handleOnBlur = e => {
         const field = e.target.name;
@@ -13,7 +22,9 @@ export default function Home() {
         newUserData[field] = value;
         setUserData(newUserData)
     }
-    const handleLogin = (e) => {
+
+
+    const handleAddUser = (e) => {
         // console.log(product)
         // send data to the server
         fetch('https://user-data-collector.herokuapp.com/user', {
@@ -27,10 +38,10 @@ export default function Home() {
             .then(res => res.json())
             .then(data => {
                 if (data.insertedId) {
-                    alert('User Added')
+                   
                     // setIsChanged(!isChanged)
                     form.current.reset();
-
+                    setOpen(true);
                 }
             })
         e.preventDefault()
@@ -59,14 +70,19 @@ export default function Home() {
     }
 
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' }}>
+
         <div style={{ width: '500px' }}>
             <h1 style={{ color: 'red' }}>Add New User</h1>
 
 
-
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    User Added
+                </Alert>
+            </Snackbar>
             <form
                 ref={form}
-                onSubmit={handleLogin}>
+                onSubmit={handleAddUser}>
 
                 <TextField
                     required

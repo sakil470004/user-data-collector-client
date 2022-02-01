@@ -1,4 +1,4 @@
-import { Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Alert, Button, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 // import CreateIcon from '@mui/icons-material/Create';
@@ -7,7 +7,16 @@ export default function AllUser() {
 
 
     const [users, setUsers] = useState([]);
+    //   snake bar
+    const [open, setOpen] = React.useState(false);
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
+        setOpen(false);
+    };
+    // end
 
     const handleRemove = id => {
         if (window.confirm("Are You Sure Want to Delete") === true) {
@@ -21,7 +30,7 @@ export default function AllUser() {
                     // console.log(data)
 
                     if (data.deletedCount) {
-                        alert('Deleted')
+                        setOpen(true)
                         const remaining = users.filter(cart => cart._id !== id);
                         setUsers(remaining)
                     }
@@ -48,6 +57,11 @@ export default function AllUser() {
 
     return <Container>
 
+        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                User Deleted
+            </Alert>
+        </Snackbar>
         <TableContainer component={Paper}>
             <Table sx={{}} aria-label="Appointments table">
                 <TableHead>
